@@ -1,10 +1,10 @@
-// components/Navbar.tsx
 
 import Image from 'next/image';
 
 export default function Navbar() {
   return (
     <nav className="w-full p-4 bg-white shadow-md">
+        {/* Image for navbar present throughout site */}
   <div className="max-w-6xl mx-auto flex items-center">
     <Image
       src="/images/FMB.png"

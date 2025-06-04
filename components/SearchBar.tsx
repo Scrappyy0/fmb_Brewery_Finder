@@ -4,19 +4,22 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useDebounce from '@/app/hooks/useDebounce';
 
-// Define the shape of each suggestion
+// Type for brewery suggestions returned from the API
 type BrewerySuggestion = {
   id: string;
   name: string;
 };
 
 export default function SearchBar() {
+  // Track user input and search suggestions
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState<BrewerySuggestion[]>([]);
   const router = useRouter();
 
+  // Debounce input to reduce API calls while typing
   const debouncedTerm = useDebounce(searchTerm, 250);
 
+  // Fetch suggestions when the debounced term changes
   useEffect(() => {
     if (!debouncedTerm) {
       setSuggestions([]);
@@ -36,6 +39,7 @@ export default function SearchBar() {
 
   return (
     <div className="relative max-w-md mb-6">
+      {/* Search input */}
       <input
         type="text"
         placeholder="🔎 Search Breweries..."
@@ -43,6 +47,8 @@ export default function SearchBar() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+
+      {/* Autocomplete suggestion list */}
       {suggestions.length > 0 && (
         <ul className="absolute text-black bg-white shadow-lg border rounded w-full z-10 max-h-60 overflow-y-auto">
           {suggestions.map((brewery) => (

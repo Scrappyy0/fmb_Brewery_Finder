@@ -1,6 +1,7 @@
 import './globals.css';
-import Navbar from '@/components/Navbar'; // adjust path as needed
+import Navbar from '@/components/Navbar'; 
 
+// Site metadata info
 export const metadata = {
   title: 'FMB FindMyBrewery',
   description: 'Discover all greatest breweries around the world and near you!',
@@ -8,6 +9,7 @@ export const metadata = {
   authors: [{ name: 'Dylan' }],
 };
 
+// Navbar Positioning
 export default function RootLayout({
   children,
 }: {
@@ -15,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='bg-[#F5F5F5] rounded-lg shadow-lg overflow-hidden'>
+      <body className='rounded-lg shadow-lg overflow-hidden'>
         <Navbar />
         <main className="p-4">{children}</main>
       </body>

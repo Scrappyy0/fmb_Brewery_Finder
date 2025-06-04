@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Welcome to 🍺 FindMyBrewery! Brewery Directory
 
-## Getting Started
+Made with Next.js, Tailwind, Typescript and the Open Brewery DB API
 
-First, run the development server:
+How to Get Started
+Clone the repo:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    git clone https://github.com/yourusername/brewery-directory.git
+    cd brewery-directory
+    Install dependencies:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    npm install
+    # or
+    yarn install
+    Run the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    npm run dev
+    # or
+    yarn dev
+    Open your browser and go to http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Project File Strucutre: 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+app/
+    page.tsx          # Main layout: search bar, filters, table
+    layout.tsx        # Global layout for site
+    global.css        # Global Background Colours
+  
+  hooks/
+      useDebounce.ts  # Custom hook for debounced input
+  
+  breweries/
+        [id]
+            page.tsx  # Specific brewery information card and google map location
+  
+  components/
+    BackButton.tsx    # Reuseable Back Button Component
+    BreweryTable.tsx  # Brewery cards with loading UI
+    FilterPanel.tsx   # City + Name filters with button
+    Navbar.tsx        # Global Navbar Component
+    SearchBar.tsx     # Autocomplete search with API fetch
+  
+  public/
+    images/
+        FMB.png         # Main Logo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Features:
 
-## Deploy on Vercel
+Search for breweries using keywords.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Filter breweries by name or city.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+View details and google map location of selected breweries.
+
+-Built by Dylan Horton

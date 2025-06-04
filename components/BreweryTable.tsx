@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Type definition for a single brewery
 type Brewery = {
   id: string;
   name: string;
@@ -13,12 +14,13 @@ type Brewery = {
   phone: string;
 };
 
+// Props optionally passed to filter results
 type Props = {
   name?: string;
   city?: string;
 };
 
-// ✅ Move this outside to avoid re-declaring it every render
+// Fetch breweries from the API with pagination and optional filters
 async function fetchBreweryData(
   page: number,
   name: string,
@@ -26,8 +28,9 @@ async function fetchBreweryData(
   setBreweries: React.Dispatch<React.SetStateAction<Brewery[]>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  setIsLoading(true);
+  setIsLoading(true); // Show loading indicator
 
+  // Build query string
   const queryParams = new URLSearchParams({
     per_page: '15',
     page: page.toString(),
@@ -36,30 +39,29 @@ async function fetchBreweryData(
   if (name) queryParams.append('by_name', name);
   if (city) queryParams.append('by_city', city);
 
+  // Fetch data and update state
   const res = await fetch(`https://api.openbrewerydb.org/v1/breweries?${queryParams.toString()}`);
   const data = await res.json();
 
   setBreweries(data);
-  setIsLoading(false);
+  setIsLoading(false); // Hide loading indicator
 }
 
 export default function BreweryTable({ name = '', city = '' }: Props) {
-  const [breweries, setBreweries] = useState<Brewery[]>([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [breweries, setBreweries] = useState<Brewery[]>([]); // List of fetched breweries
+  const [page, setPage] = useState(1); // Current page number
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const router = useRouter();
 
-  // ✅ No more ESLint warning
+  // Fetch data when page, name, or city changes
   useEffect(() => {
     fetchBreweryData(page, name, city, setBreweries, setIsLoading);
   }, [page, name, city]);
 
+  // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
   }, [name, city]);
-
-  // ... rest of your code stays the same
-
 
   return (
     <div className="mt-6">
