@@ -29,8 +29,11 @@ async function getBrewery(id: string): Promise<Brewery | null> {
   return res.json();
 }
 
-// ✅ Vercel-compatible component export with correct props structure
-export default async function BreweryDetailsPage({ params }: BreweryPageProps) {
+export default async function BreweryDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const brewery = await getBrewery(params.id);
   if (!brewery) return notFound();
 
