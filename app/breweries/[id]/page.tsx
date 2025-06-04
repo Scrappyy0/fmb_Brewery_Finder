@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
 import BackButton from '@/components/BackButton';
 
 // Type for brewery data
