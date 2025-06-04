@@ -1,6 +1,9 @@
+// app/breweries/[id]/page.tsx
+
 import { notFound } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 
+// Brewery data type
 type Brewery = {
   id: string;
   name: string;
@@ -14,12 +17,7 @@ type Brewery = {
   longitude: string;
 };
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
+// Fetch brewery by ID
 async function getBrewery(id: string): Promise<Brewery | null> {
   const res = await fetch(`https://api.openbrewerydb.org/v1/breweries/${id}`, {
     cache: 'no-store',
@@ -29,7 +27,13 @@ async function getBrewery(id: string): Promise<Brewery | null> {
   return res.json();
 }
 
-export default async function BreweryDetailsPage({ params }: Props) {
+// No need to define a separate `Props` type manually.
+// Next.js infers this structure automatically.
+export default async function BreweryDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const brewery = await getBrewery(params.id);
   if (!brewery) return notFound();
 
