@@ -18,37 +18,48 @@ type Props = {
   city?: string;
 };
 
+// ✅ Move this outside to avoid re-declaring it every render
+async function fetchBreweryData(
+  page: number,
+  name: string,
+  city: string,
+  setBreweries: React.Dispatch<React.SetStateAction<Brewery[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  setIsLoading(true);
+
+  const queryParams = new URLSearchParams({
+    per_page: '15',
+    page: page.toString(),
+  });
+
+  if (name) queryParams.append('by_name', name);
+  if (city) queryParams.append('by_city', city);
+
+  const res = await fetch(`https://api.openbrewerydb.org/v1/breweries?${queryParams.toString()}`);
+  const data = await res.json();
+
+  setBreweries(data);
+  setIsLoading(false);
+}
+
 export default function BreweryTable({ name = '', city = '' }: Props) {
   const [breweries, setBreweries] = useState<Brewery[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Fetch breweries with optional filters
-  const fetchBreweries = async () => {
-    setIsLoading(true);
-    const queryParams = new URLSearchParams({
-      per_page: '15',
-      page: page.toString(),
-    });
-    if (name) queryParams.append('by_name', name);
-    if (city) queryParams.append('by_city', city);
-
-    const res = await fetch(`https://api.openbrewerydb.org/v1/breweries?${queryParams.toString()}`);
-    const data = await res.json();
-    setBreweries(data);
-    setIsLoading(false);
-  };
-
-  // Fetch data on filter/page change
+  // ✅ No more ESLint warning
   useEffect(() => {
-    fetchBreweries();
+    fetchBreweryData(page, name, city, setBreweries, setIsLoading);
   }, [page, name, city]);
 
-  // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
   }, [name, city]);
+
+  // ... rest of your code stays the same
+
 
   return (
     <div className="mt-6">

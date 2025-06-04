@@ -1,9 +1,8 @@
-// app/breweries/[id]/page.tsx
-
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import BackButton from '@/components/BackButton';
 
-// Brewery data type
+// Type for brewery data
 type Brewery = {
   id: string;
   name: string;
@@ -17,23 +16,22 @@ type Brewery = {
   longitude: string;
 };
 
-// Fetch brewery by ID
+// ✅ Correct props typing via Next.js App Router convention
+interface BreweryPageProps {
+  params: { id: string };
+}
+
+// Fetch brewery data
 async function getBrewery(id: string): Promise<Brewery | null> {
   const res = await fetch(`https://api.openbrewerydb.org/v1/breweries/${id}`, {
     cache: 'no-store',
   });
-
   if (!res.ok) return null;
   return res.json();
 }
 
-// No need to define a separate `Props` type manually.
-// Next.js infers this structure automatically.
-export default async function BreweryDetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+// ✅ Vercel-compatible component export with correct props structure
+export default async function BreweryDetailsPage({ params }: BreweryPageProps) {
   const brewery = await getBrewery(params.id);
   if (!brewery) return notFound();
 
